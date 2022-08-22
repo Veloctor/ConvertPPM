@@ -19,7 +19,7 @@ try
     if (MagicNumber != "P6")
     {
         Console.WriteLine("Magic number is not P6. It's " + MagicNumber);
-        return;
+        goto start;
     }
     string[] res = openText.ReadLine().Split(' ');
     resX = Convert.ToInt32(res[0]);
