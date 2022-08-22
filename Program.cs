@@ -3,10 +3,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 string fileName;
-if (args.Length == 1) fileName = args[0];
+bool triedReadArg = false;
+start:
+if (args.Length == 1 && !triedReadArg)
+{
+    fileName = args[0];
+    triedReadArg = true;
+}
 else
 {
-start:
     Console.WriteLine("请输入要转换的ppm,留空认为\"binary.ppm\":");
     fileName = Console.ReadLine();
     if (string.IsNullOrWhiteSpace(fileName)) fileName = "binary.ppm";
@@ -38,13 +43,13 @@ while (enterCount > 0)
 }
 WriteableBitmap bitmap = new(resX, resY, 96, 96, PixelFormats.Rgb24, null);
 bitmap.Lock();
-Span<byte> sp;
+Span<byte> bufferWrapper;
 unsafe
 {
     void* bufferPtr = (void*)bitmap.BackBuffer;
-    sp = new(bufferPtr, resX * resY * 3);
+    bufferWrapper = new(bufferPtr, resX * resY * 3);
 }
-inputFS.Read(sp);
+inputFS.Read(bufferWrapper);
 bitmap.Unlock();
 PngBitmapEncoder encoder = new();
 encoder.Frames.Add(BitmapFrame.Create(bitmap));
