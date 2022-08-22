@@ -3,10 +3,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 string fileName;
-start:
 if (args.Length == 1) fileName = args[0];
 else
 {
+start:
     Console.WriteLine("请输入要转换的ppm,留空认为\"binary.ppm\":");
     fileName = Console.ReadLine();
     if (string.IsNullOrWhiteSpace(fileName)) fileName = "binary.ppm";
